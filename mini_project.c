@@ -1,50 +1,40 @@
-BSF STATUS,RP1
-BSF STATUS,RP0
-BTFSC EECON,WR1  ; Wait for the previous write to complete
-GOTO $-1         ;
-BCF STATUS,RP0   ; Bank 2
-MOVF 10,W   ; Move address to W
-MOVWF EEADR      ; Write address
-MOVF 'kp',W      ; Move data to W
-MOVWF EEDATA     ; Write data
-BSF STATUS,RP0   ; Bank 3
-BCF EECON1,EEPGD ; Select EEPROM
-BSF EECON1,WREN  ; Write to EEPROM enabled
-BCF INCON,GIE    ; All interrupts disabled
+main()
+{
+  char kp;
+  char kd;
+  char ki;
 
-BTFSC EECON,WR1  ; Wait for the previous write to complete
-GOTO $-1         ;
-BCF STATUS,RP0   ; Bank 2
-MOVF 11,W   ; Move address to W
-MOVWF EEADR      ; Write address
-MOVF 'kd',W      ; Move data to W
-MOVWF EEDATA     ; Write data
-BSF STATUS,RP0   ; Bank 3
-BCF EECON1,EEPGD ; Select EEPROM
-BSF EECON1,WREN  ; Write to EEPROM enabled
-BCF INCON,GIE    ; All interrupts disabled
+  EEADR=10;
+  EEDAT=kp;
 
+  EECON1.EEPGD = 0; //Selecting EEPROM Data Memory
+  EECON1.WREN = 1; //Enable writing of EEPROM
+  INTCON=0; //Diables the interrupt
+  EECON2=0x55; //Required sequence for write to internal EEPROM
+  EECON2=0xAA; //Required sequence for write to internal EEPROM
+  EECON1.WR = 1; //Initialise write cycle
+  
+  EEADR=11;
+  EEDAT=kd;
 
-BTFSC EECON,WR1  ; Wait for the previous write to complete
-GOTO $-1         ;
-BCF STATUS,RP0   ; Bank 2
-MOVF 12,W   ; Move address to W
-MOVWF EEADR      ; Write address
-MOVF 'ki',W      ; Move data to W
-MOVWF EEDATA     ; Write data
-BSF STATUS,RP0   ; Bank 3
-BCF EECON1,EEPGD ; Select EEPROM
-BSF EECON1,WREN  ; Write to EEPROM enabled
-BCF INCON,GIE    ; All interrupts disabled
+  EECON1.EEPGD = 0; //Selecting EEPROM Data Memory
+  EECON1.WREN = 1; //Enable writing of EEPROM
+  INTCON=0; //Diables the interrupt
+  EECON2=0x55; //Required sequence for write to internal EEPROM
+  EECON2=0xAA; //Required sequence for write to internal EEPROM
+  EECON1.WR = 1; //Initialise write cycle
+  
+  EEADR=12;
+  EEDAT=ki;
 
-;Required Sentence
-MOVLW 55h
-MOVWF EECON2
-MOVLW AAh
-MOVWF EECON2
-BSF EECON1,WR
-
-BSF INTCON,GIE   ; Interrupts enabled
-BCF EECON1,WREN  ; Write to EEPROM disabled
-
-
+  EECON1.EEPGD = 0; //Selecting EEPROM Data Memory
+  EECON1.WREN = 1; //Enable writing of EEPROM
+  INTCON=0; //Diables the interrupt
+  EECON2=0x55; //Required sequence for write to internal EEPROM
+  EECON2=0xAA; //Required sequence for write to internal EEPROM
+  EECON1.WR = 1; //Initialise write cycle
+  
+  
+  INTCON.GIE = 1;//Enables Interrupt
+  EECON1.WREN = 0; //To disable write
+}
