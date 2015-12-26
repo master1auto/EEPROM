@@ -1,4 +1,4 @@
-#include <stdio.h>
+//you don't need this header file #include <stdio.h>
 void writeEEPROM(unsigned char address, unsigned char data)
 {
   EEADR=address;
@@ -11,15 +11,18 @@ void writeEEPROM(unsigned char address, unsigned char data)
   EECON1.WR = 1; //Initialise write cycle
   while(EECON1.WR==1)
   {
-    asm nop (); // wait for write to complete
+    asm nop; // wait for write to complete
   }
   INTCON.GIE = 1;//Enables Interrupt
   EECON1.WREN = 0; //To disable write
 }
 //----------------------------------//
-main()
+void main()
 {
-  writeEEPROM(unsigned char 10, unsigned char kp)
-  writeEEPROM(unsigned char 11, unsigned char kd)
-  writeEEPROM(unsigned char 12, unsigned char ki)
+  char kp;
+  char kd;
+  char ki;
+  writeEEPROM(10,kp)
+  writeEEPROM(11,kd)
+  writeEEPROM(12,ki)
   }
