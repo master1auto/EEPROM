@@ -1,8 +1,8 @@
 //you don't need this header file #include <stdio.h>
-void writeEEPROM(unsigned char address, unsigned char data)
+void writeEEPROM(unsigned char addr, unsigned char mydata) //the words data and address are used by mikroc
 {
-  EEADR=address;
-  EEDAT=data;
+  EEADR=addr;
+  EEDAT=mydata;
   EECON1.EEPGD = 0; //Selecting EEPROM Data Memory
   EECON1.WREN = 1; //Enable writing of EEPROM
   INTCON=0; //Diables the interrupt
@@ -22,7 +22,7 @@ void main()
   char kp;
   char kd;
   char ki;
-  writeEEPROM(10,kp)
-  writeEEPROM(11,kd)
-  writeEEPROM(12,ki)
+  writeEEPROM(10,kp);
+  writeEEPROM(11,kd);
+  writeEEPROM(12,ki);
   }
